@@ -1,3 +1,5 @@
+This is a fork from https://github.com/pedromassango/bottom_navy_bar. The difference is that it allows more than 5 tabs in the bottom navigation bar.
+
 # BottomNavyBar
 
 A beautiful and animated bottom navigation. The navigation bar use your current theme, but you are free to customize it.
