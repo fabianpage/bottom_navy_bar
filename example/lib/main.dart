@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,7 +26,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int currentIndex = 0;
   int _counter = 0;
 
@@ -47,9 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
@@ -61,10 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
       bottomNavigationBar: BottomNavyBar(
         selectedIndex: currentIndex,
         showElevation: true,
+        itemCornerRadius: 8,
+        curve: Curves.easeInBack,
         onItemSelected: (index) => setState(() {
           currentIndex = index;
         }),
@@ -73,21 +71,27 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.apps),
             title: Text('Home'),
             activeColor: Colors.red,
+            textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-              icon: Icon(Icons.people),
-              title: Text('Users'),
-              activeColor: Colors.purpleAccent
+            icon: Icon(Icons.people),
+            title: Text('Users'),
+            activeColor: Colors.purpleAccent,
+            textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-              icon: Icon(Icons.message),
-              title: Text('Messages'),
-              activeColor: Colors.pink
+            icon: Icon(Icons.message),
+            title: Text(
+              'Messages test for mes teset test test ',
+            ),
+            activeColor: Colors.pink,
+            textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-              icon: Icon(Icons.settings),
-              title: Text('Settings'),
-              activeColor: Colors.blue
+            icon: Icon(Icons.settings),
+            title: Text('Settings'),
+            activeColor: Colors.blue,
+            textAlign: TextAlign.center,
           ),
         ],
       ),
