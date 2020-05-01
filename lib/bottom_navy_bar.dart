@@ -11,6 +11,8 @@ class BottomNavyBar extends StatelessWidget {
   final Duration animationDuration;
   final List<BottomNavyBarItem> items;
   final ValueChanged<int> onItemSelected;
+  final double selectedWidth; 
+  final double unselectedWidth; 
   final MainAxisAlignment mainAxisAlignment;
   final double itemCornerRadius;
   final double containerHeight;
@@ -22,6 +24,8 @@ class BottomNavyBar extends StatelessWidget {
     this.showElevation = true,
     this.iconSize = 24,
     this.backgroundColor,
+    this.selectedWidth = 130, 
+    this.unselectedWidth = 50, 
     this.itemCornerRadius = 50,
     this.containerHeight = 56,
     this.animationDuration = const Duration(milliseconds: 270),
@@ -85,6 +89,8 @@ class BottomNavyBar extends StatelessWidget {
 class _ItemWidget extends StatelessWidget {
   final double iconSize;
   final bool isSelected;
+  final double selectedWidth; 
+  final double unselectedWidth; 
   final BottomNavyBarItem item;
   final Color backgroundColor;
   final double itemCornerRadius;
@@ -95,6 +101,8 @@ class _ItemWidget extends StatelessWidget {
     Key key,
     @required this.item,
     @required this.isSelected,
+    @required this.selectedWidth, 
+    @required this.unselectedWidth, 
     @required this.backgroundColor,
     @required this.animationDuration,
     @required this.itemCornerRadius,
@@ -115,7 +123,7 @@ class _ItemWidget extends StatelessWidget {
       container: true,
       selected: isSelected,
       child: AnimatedContainer(
-        width: isSelected ? 130 : 50,
+        width: isSelected ? selectedWidth : unselectedWidth,
         height: double.maxFinite,
         duration: animationDuration,
         curve: curve,
