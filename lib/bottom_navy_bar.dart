@@ -31,7 +31,7 @@ class BottomNavyBar extends StatelessWidget {
     this.curve = Curves.linear,
   }) {
     assert(items != null);
-    assert(items.length >= 2 && items.length <= 5);
+    assert(items.length >= 2);
     assert(onItemSelected != null);
     assert(curve != null);
   }
