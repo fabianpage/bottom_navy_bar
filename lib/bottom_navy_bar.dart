@@ -75,6 +75,8 @@ class BottomNavyBar extends StatelessWidget {
                   backgroundColor: bgColor,
                   itemCornerRadius: itemCornerRadius,
                   animationDuration: animationDuration,
+                  selectedWidth: selectedWidth,
+                  unselectedWidth: unselectedWidth,
                   curve: curve,
                 ),
               );
@@ -115,6 +117,8 @@ class _ItemWidget extends StatelessWidget {
         assert(itemCornerRadius != null),
         assert(iconSize != null),
         assert(curve != null),
+        assert(selectedWidth != null),
+        assert(unselectedWidth != null),
         super(key: key);
 
   @override
@@ -136,7 +140,7 @@ class _ItemWidget extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           physics: NeverScrollableScrollPhysics(),
           child: Container(
-            width: isSelected ? 130 : 50,
+            width: isSelected ? selectedWidth : unselectedWidth,
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               mainAxisSize: MainAxisSize.max,
