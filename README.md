@@ -14,7 +14,8 @@
 
 # BottomNavyBar
 
-A beautiful and animated bottom navigation. The navigation bar use your current theme, but you are free to customize it.
+A beautiful and animated bottom navigation.
+The navigation bar uses your current theme, but you are free to customize it.
 
 | Preview | PageView |
 |---------|----------|
@@ -25,13 +26,14 @@ A beautiful and animated bottom navigation. The navigation bar use your current 
 ### BottomNavyBar
 - `iconSize` - the item icon's size
 - `items` - navigation items, required more than one item and less than six
-- `selectedIndex` - the current item index. Use this to change the selected item. Default to zero
-- `onItemSelected` - required to listen when a item is tapped it provide the selected item's index
+- `selectedIndex` - the current item index. Use this to change the selected item. Defaults to zero
+- `onItemSelected` - required to listen when an item is tapped it provides the selected item's index
 - `backgroundColor` - the navigation bar's background color
 - `showElevation` - if false the appBar's elevation will be removed
 - `mainAxisAlignment` - use this property to change the horizontal alignment of the items. It is mostly used when you have ony two items and you want to center the items
 - `curve` - param to customize the item change's animation
 - `containerHeight` - changes the Navigation Bar's height
+- `showInactiveTitle` - use this property show a Inactive titles. Defaults to false.
  
 ### BottomNavyBarItem
 - `icon` - the icon of this item
@@ -39,6 +41,9 @@ A beautiful and animated bottom navigation. The navigation bar use your current 
 - `activeColor` - the active item's background and text color
 - `inactiveColor` - the inactive item's icon color
 - `textAlign` - property to change the alignment of the item title
+- `activeBackgroundColor` - the active item's background color
+- `activeTextColor` - the active item's text color
+- `tooltipText` - the tooltip text that will appear when the item is long pressed
 
 ## Getting Started
 
@@ -47,7 +52,7 @@ Add the dependency in `pubspec.yaml`:
 ```yaml
 dependencies:
   ...
-  bottom_navy_bar: ^5.6.0
+  bottom_navy_bar: ^6.0.0
 ```
 
 ## Basic Usage
@@ -155,3 +160,20 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+
+## Author
+
+- [Pedro Massango](https://github.com/pedromassango)
+
+## Maintainers
+
+- [Antonio Pedro](https://github.com/antonio-pedro99)
+
+## Contributions
+
+Contributions of any kind are more than welcome! Feel free to fork and improve in any way you want, make a pull request, or open an issue.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for more info on how to contribute to this project.
+
+# License
+
+This project is licensed under the Apache-2.0 License - see the [LICENSE](./LICENSE) file for details.

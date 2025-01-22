@@ -1,7 +1,6 @@
 library bottom_navy_bar;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// A beautiful and animated bottom navigation that paints a rounded shape
 /// around its [items] to provide a wonderful look.
@@ -17,10 +16,17 @@ class BottomNavyBar extends StatelessWidget {
     this.backgroundColor,
     this.selectedWidth = 130,
     this.unselectedWidth = 50,
+    this.shadowColor = Colors.black12,
     this.itemCornerRadius = 50,
     this.containerHeight = 56,
+    this.blurRadius = 2,
+    this.spreadRadius = 0,
+    this.borderRadius,
+    this.shadowOffset = Offset.zero,
+    this.itemPadding = const EdgeInsets.symmetric(horizontal: 4),
     this.animationDuration = const Duration(milliseconds: 270),
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    this.showInactiveTitle = false,
     required this.items,
     required this.onItemSelected,
     this.curve = Curves.linear,
@@ -29,6 +35,7 @@ class BottomNavyBar extends StatelessWidget {
         assert(onItemSelected != null),
         assert(animationDuration != null),
         assert(curve != null),
+        assert(items.length >= 2 && items.length <= 8),
         super(key: key);
 
   /// The selected item is index. Changing this property will change and animate
@@ -39,8 +46,11 @@ class BottomNavyBar extends StatelessWidget {
   final double iconSize;
 
   /// The background color of the navigation bar. It defaults to
-  /// [Theme.bottomAppBarColor] if not provided.
+  /// [ThemeData.BottomAppBarTheme.color] if not provided.
   final Color? backgroundColor;
+
+  /// Defines the shadow color of the navigation bar. Defaults to [Colors.black12].
+  final Color shadowColor;
 
   /// Whether this navigation bar should show a elevation. Defaults to true.
   final bool showElevation;
@@ -69,23 +79,46 @@ class BottomNavyBar extends StatelessWidget {
   /// Defines the bottom navigation bar height. Defaults to 56.
   final double containerHeight;
 
+  /// Used to configure the blurRadius of the [BoxShadow]. Defaults to 2.
+  final double blurRadius;
+
+  /// Used to configure the spreadRadius of the [BoxShadow]. Defaults to 0.
+  final double spreadRadius;
+
+  /// Used to configure the offset of the [BoxShadow]. Defaults to null.
+  final Offset shadowOffset;
+
+  /// Used to configure the borderRadius of the [BottomNavyBar]. Defaults to null.
+  final BorderRadiusGeometry? borderRadius;
+
+  /// Used to configure the padding of the [BottomNavyBarItem] [items].
+  /// Defaults to EdgeInsets.symmetric(horizontal: 4).
+  final EdgeInsets itemPadding;
+
   /// Used to configure the animation curve. Defaults to [Curves.linear].
   final Curve curve;
 
+  /// Whether this navigation bar should show a Inactive titles. Defaults to false.
+  final bool showInactiveTitle;
+
   @override
   Widget build(BuildContext context) {
-    final bgColor = backgroundColor ?? Theme.of(context).bottomAppBarColor;
+    final bgColor = backgroundColor ??
+        (Theme.of(context).bottomAppBarTheme.color ?? Colors.white);
 
     return Container(
       decoration: BoxDecoration(
         color: bgColor,
         boxShadow: [
           if (showElevation)
-            const BoxShadow(
-              color: Colors.black12,
-              blurRadius: 2,
+            BoxShadow(
+              color: shadowColor,
+              blurRadius: blurRadius,
+              spreadRadius: spreadRadius,
+              offset: shadowOffset,
             ),
         ],
+        borderRadius: borderRadius,
       ),
       child: SafeArea(
         child: Container(
@@ -105,9 +138,11 @@ class BottomNavyBar extends StatelessWidget {
                   backgroundColor: bgColor,
                   itemCornerRadius: itemCornerRadius,
                   animationDuration: animationDuration,
+                  itemPadding: itemPadding,
                   curve: curve,
                   unselectedWidth: unselectedWidth,
                   selectedWidth: selectedWidth,
+                  showInactiveTitle: showInactiveTitle,
                 ),
               );
             }).toList(),
@@ -127,7 +162,9 @@ class _ItemWidget extends StatelessWidget {
   final Color backgroundColor;
   final double itemCornerRadius;
   final Duration animationDuration;
+  final EdgeInsets itemPadding;
   final Curve curve;
+  final bool showInactiveTitle;
 
   const _ItemWidget({
     Key? key,
@@ -139,35 +176,52 @@ class _ItemWidget extends StatelessWidget {
     required this.animationDuration,
     required this.itemCornerRadius,
     required this.iconSize,
+    required this.itemPadding,
+    required this.showInactiveTitle,
     this.curve = Curves.linear,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
+    Semantics semantic = Semantics(
       container: true,
       selected: isSelected,
       child: AnimatedContainer(
-        width: isSelected ? selectedWidth : unselectedWidth,
+        // width: isSelected ? selectedWidth : unselectedWidth,
+        width: (showInactiveTitle)
+            ? ((isSelected)
+                ? MediaQuery.of(context).size.width * 0.25
+                : MediaQuery.of(context).size.width * 0.2)
+            : ((isSelected)
+                ? MediaQuery.of(context).size.width * 0.3
+                : MediaQuery.of(context).size.width * 0.1),
         height: double.maxFinite,
         duration: animationDuration,
         curve: curve,
         decoration: BoxDecoration(
-          color:
-              isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
+          color: isSelected
+              ? (item.activeBackgroundColor ??
+                  item.activeColor.withOpacity(0.2))
+              : backgroundColor,
           borderRadius: BorderRadius.circular(itemCornerRadius),
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: NeverScrollableScrollPhysics(),
           child: Container(
-            width: isSelected ? 130 : 50,
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            width: (showInactiveTitle)
+                ? ((isSelected)
+                ? MediaQuery.of(context).size.width * 0.25
+                : MediaQuery.of(context).size.width * 0.2)
+                : ((isSelected)
+                ? MediaQuery.of(context).size.width * 0.3
+                : MediaQuery.of(context).size.width * 0.1),
+            padding: EdgeInsets.symmetric(horizontal: 4),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 IconTheme(
                   data: IconThemeData(
                     size: iconSize,
@@ -179,10 +233,26 @@ class _ItemWidget extends StatelessWidget {
                   ),
                   child: item.icon,
                 ),
-                if (isSelected)
-                  Expanded(
+                if (showInactiveTitle)
+                  Flexible(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      padding: itemPadding,
+                      child: DefaultTextStyle.merge(
+                        style: TextStyle(
+                          color: item.activeTextColor ?? item.activeColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        textAlign: item.textAlign,
+                        overflow: TextOverflow.ellipsis,
+                        child: item.title,
+                      ),
+                    ),
+                  )
+                else if (isSelected)
+                  Flexible(
+                    child: Container(
+                      padding: itemPadding,
                       child: DefaultTextStyle.merge(
                         style: TextStyle(
                           color: item.activeColor,
@@ -190,6 +260,7 @@ class _ItemWidget extends StatelessWidget {
                         ),
                         maxLines: 1,
                         textAlign: item.textAlign,
+                        overflow: TextOverflow.ellipsis,
                         child: item.title,
                       ),
                     ),
@@ -199,6 +270,12 @@ class _ItemWidget extends StatelessWidget {
           ),
         ),
       ),
+    );
+    return item.tooltipText == null
+        ? semantic
+        : Tooltip(
+      message: item.tooltipText!,
+      child: semantic,
     );
   }
 }
@@ -211,6 +288,9 @@ class BottomNavyBarItem {
     this.activeColor = Colors.blue,
     this.textAlign,
     this.inactiveColor,
+    this.activeTextColor,
+    this.activeBackgroundColor,
+    this.tooltipText,
   });
 
   /// Defines this item's icon which is placed in the right side of the [title].
@@ -230,4 +310,16 @@ class BottomNavyBarItem {
   ///
   /// This will take effect only if [title] it a [Text] widget.
   final TextAlign? textAlign;
+
+  /// The [title] color with higher priority than [activeColor]
+  ///
+  /// Will fallback to [activeColor] when null
+  final Color? activeTextColor;
+
+  /// The [BottomNavyBarItem] background color when active.
+  ///
+  /// Will fallback to [activeColor] with opacity 0.2 when null
+  final Color? activeBackgroundColor;
+  /// Will show a tooltip for the item if provided.
+  final String? tooltipText;
 }

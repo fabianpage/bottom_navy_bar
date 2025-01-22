@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -40,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
@@ -51,9 +50,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavyBar(
+        showInactiveTitle: true,
         selectedIndex: _currentIndex,
         showElevation: true,
         itemCornerRadius: 24,
+        iconSize: 20,
         curve: Curves.easeIn,
         onItemSelected: (index) => setState(() => _currentIndex = index),
         items: <BottomNavyBarItem>[
@@ -61,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.apps),
             title: Text('Home'),
             activeColor: Colors.red,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.center
           ),
           BottomNavyBarItem(
             icon: Icon(Icons.people),
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavyBarItem(
             icon: Icon(Icons.message),
             title: Text(
-              'Messages test for mes teset test test ',
+              'Messages Received',
             ),
             activeColor: Colors.pink,
             textAlign: TextAlign.center,
